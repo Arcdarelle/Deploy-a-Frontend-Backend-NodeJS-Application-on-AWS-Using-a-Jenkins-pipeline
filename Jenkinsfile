@@ -5,7 +5,8 @@ pipeline {
         stage ('Build and push backend and frontend images to ECR'){
             steps {
                 sh '''
-                cd ecr
+                cd ecr 
+                terraform refresh
                 terraform destroy -auto-approve
                 '''
             }
@@ -13,7 +14,10 @@ pipeline {
 
         stage ('Destroying the app to ECS'){
             steps{
-                sh 'terraform destroy --auto-approve'
+                sh '''
+                terraform refresh
+                terraform destroy --auto-approve
+                '''
             }
         }
     }
