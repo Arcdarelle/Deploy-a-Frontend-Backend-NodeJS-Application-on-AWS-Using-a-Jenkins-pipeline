@@ -6,6 +6,8 @@ pipeline {
             steps {
                 sh '''
                 cd ecr 
+                terraform state rm aws_lb_target_group.frontend_target_group
+                terraform state rm aws_ecs_cluster.cluster
                 terraform refresh
                 terraform destroy -auto-approve
                 '''
