@@ -1,17 +1,20 @@
 pipeline {
-    agent any
+    agent any
 
-    stages {
+    stages {
+        stage ('Build and push backend and frontend images to ECR'){
+            steps {
+                sh '''
+                cd ecr
+                terraform destroy -auto-approve
+                '''
+            }
+        }
 
-        stage ('Destroy the infrastructure'){
-            steps{
-                sh '''
-                terraform destroy -auto-approve
-                cd ecr
-                terraform destroy -auto-approve
-                '''
-            }
-        }    
-
-    }
+        stage ('Destroying the app to ECS'){
+            steps{
+                sh 'terraform destroy --auto-approve'
+            }
+        }
+    }
 }
